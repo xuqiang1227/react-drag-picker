@@ -1,0 +1,40 @@
+{
+  "name": "react-drag-picker",
+  "version": "0.1.0",
+  "private": false,
+  "author": "kairi",
+  "email": "kairi1227@126.com",
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kairi1227/react-drag-picker.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "drag",
+    "select",
+    "picker"
+  ],
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-scripts": "1.0.17"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.1.2",
+    "webpack": "^3.10.0",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-react": "^6.0.15",
+    "babel-preset-stage-0": "^6.5.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "webpack",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
