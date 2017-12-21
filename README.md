@@ -1,6 +1,9 @@
 # react-drag-picker
 > drag select element by react.
 
+[![npm](https://img.shields.io/npm/v/react-drag-picker.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/react-drag-picker)
+[![NPM downloads](http://img.shields.io/npm/dm/react-drag-picker.svg?style=flat-plastic)](https://npmjs.org/package/react-drag-picker)
+
 ### install 
 ```bash
 npm i react-drag-picker --save
