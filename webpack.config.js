@@ -19,18 +19,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
         include: [path.join(__dirname, './src')]
-      },
-	    {
-		    test: /\.svg/,
-		    loader: "url-loader?limit=8000&mimetype=image/svg+xml"
-	    },
-      {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader'
-      },
-      {
-        test: /\.(png|jpg|gif|woff|woff2)$/,
-        loader: 'url-loader?limit=120000'
       }
     ]
   },

@@ -140,11 +140,11 @@ class DragPicker extends React.PureComponent {
 
   
   selectAll() {
-    each(this.refs, function(ref, key) {
+    each(this.refs, (ref, key) => {
       if(key !== 'selectionBox') {
         this.selectedChildren[key] = true;
       }
-    }.bind(this));
+    });
   }
 
   
