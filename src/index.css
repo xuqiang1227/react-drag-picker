@@ -1,5 +1,13 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+
+.select-box {
+  background: #f0f0f0;
+  width: 30px;
+  height: 120px;
+  text-align: center;
+  line-height: 104px;
+  display: inline-block;
+  font-size: 14px;
+  color: #5A5A5A;
+  box-sizing: border-box;
+  border: 1px solid #5A5A5A;
 }
