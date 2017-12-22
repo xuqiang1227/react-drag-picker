@@ -964,6 +964,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(3);
@@ -1065,7 +1067,7 @@ var DragPicker = function (_React$PureComponent) {
         selectionBox: null,
         appendMode: false
       });
-      this.props.onChange && this.props.onChange.call(null, Object.keys(this.selectedChildren));
+      this.props.onChange(Object.keys(this.selectedChildren));
     }
   }, {
     key: 'onMouseMove',
@@ -1087,57 +1089,41 @@ var DragPicker = function (_React$PureComponent) {
     value: function render() {
       var _this4 = this;
 
+      var index = 0;
+      var selectedStyle = this.props.selectedStyle;
+      var _state = this.state,
+          mouseDown = _state.mouseDown,
+          endPoint = _state.endPoint,
+          startPoint = _state.startPoint,
+          selectionBox = _state.selectionBox;
+      var selectionBoxStyle = this.props.selectionBoxStyle;
+
       return _react2.default.createElement(
         'div',
         { style: { position: 'relative' }, className: this.props.className || '', ref: 'selectionBox', onMouseDown: function onMouseDown(e) {
             return _this4.onMouseDown(e);
           } },
-        this.renderItem(),
-        this.renderPickerBox()
-      );
-    }
-  }, {
-    key: 'renderItem',
-    value: function renderItem() {
-      var _this5 = this;
-
-      var index = 0;
-      var selectedStyle = this.props.selectedStyle;
-
-      return _react2.default.Children.map(this.props.children, function (child) {
-        var tmpKey = !child.key ? index++ : child.key;
-        var isSelected = Object.keys(_this5.selectedChildren).some(function (i) {
-          return i === tmpKey;
-        });
-        return _react2.default.cloneElement(child, {
-          ref: tmpKey,
-          style: isSelected ? selectedStyle : {},
-          onClickCapture: function onClickCapture(e) {
-            if ((e.ctrlKey || e.altKey || e.shiftKey) && _this5.props.enabled) {
-              e.preventDefault();
-              e.stopPropagation();
-              _this5.selectItem(tmpKey, !Object.keys(_this5.selectedChildren).some(function (i) {
-                return i === tmpKey;
-              }));
+        _react2.default.Children.map(this.props.children, function (child) {
+          var tmpKey = !child.key ? index++ : child.key;
+          var isSelected = Object.keys(_this4.selectedChildren).some(function (i) {
+            return i === tmpKey;
+          });
+          return _react2.default.cloneElement(child, {
+            ref: tmpKey,
+            style: isSelected ? selectedStyle : {},
+            onClickCapture: function onClickCapture(e) {
+              if ((e.ctrlKey || e.altKey || e.shiftKey) && _this4.props.enabled) {
+                e.preventDefault();
+                e.stopPropagation();
+                _this4.selectItem(tmpKey, !Object.keys(_this4.selectedChildren).some(function (i) {
+                  return i === tmpKey;
+                }));
+              }
             }
-          }
-        });
-      });
-    }
-  }, {
-    key: 'renderPickerBox',
-    value: function renderPickerBox() {
-      if (!this.state.mouseDown || !this.state.endPoint || !this.state.startPoint) {
-        return null;
-      }
-      var selectionBox = this.state.selectionBox;
-
-      if (selectionBox) {
-        selectionBox.background = 'rgba(0, 162, 255, 0.4)';
-        selectionBox.position = 'absolute';
-        selectionBox.zIndex = 99;
-      }
-      return _react2.default.createElement('div', { style: selectionBox });
+          });
+        }),
+        mouseDown && endPoint && startPoint && _react2.default.createElement('div', { style: _extends({}, selectionBoxStyle, selectionBox) })
+      );
     }
   }, {
     key: 'selectItem',
@@ -1147,7 +1133,14 @@ var DragPicker = function (_React$PureComponent) {
       } else {
         delete this.selectedChildren[key];
       }
-      this.props.onChange.call(null, Object.keys(this.selectedChildren));
+      this.props.onChange(Object.keys(this.selectedChildren));
+      this.forceUpdate();
+    }
+  }, {
+    key: 'clearAll',
+    value: function clearAll() {
+      this.selectedChildren = {};
+      this.props.onChange(Object.keys(this.selectedChildren));
       this.forceUpdate();
     }
   }, {
@@ -1161,12 +1154,12 @@ var DragPicker = function (_React$PureComponent) {
   }, {
     key: 'updateCollidingChildren',
     value: function updateCollidingChildren(selectionBox) {
-      var _this6 = this;
+      var _this5 = this;
 
       var tmpNode = null;
       var tmpBox = null;
       this.refs && Object.keys(this.refs).forEach(function (key) {
-        var ref = _this6.refs[key];
+        var ref = _this5.refs[key];
         if (key !== 'selectionBox') {
           tmpNode = _reactDom2.default.findDOMNode(ref);
           tmpBox = {
@@ -1175,11 +1168,11 @@ var DragPicker = function (_React$PureComponent) {
             width: tmpNode.clientWidth,
             height: tmpNode.clientHeight
           };
-          if (_this6.boxIntersects(selectionBox, tmpBox)) {
-            _this6.selectedChildren[key] = true;
+          if (_this5.boxIntersects(selectionBox, tmpBox)) {
+            _this5.selectedChildren[key] = true;
           } else {
-            if (!_this6.state.appendMode) {
-              delete _this6.selectedChildren[key];
+            if (!_this5.state.appendMode) {
+              delete _this5.selectedChildren[key];
             }
           }
         }
@@ -1212,14 +1205,16 @@ DragPicker.propTypes = {
   enabled: _propTypes2.default.bool,
   onChange: _propTypes2.default.func,
   selectedStyle: _propTypes2.default.object,
-  className: _propTypes2.default.string
+  className: _propTypes2.default.string,
+  selectionBoxStyle: _propTypes2.default.object
 };
 
 DragPicker.defaultProps = {
   enabled: true,
   onChange: function onChange() {},
   selectedStyle: { backgroundColor: '#64B5F6', color: 'white' },
-  className: ''
+  className: '',
+  selectionBoxStyle: { background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000 }
 };
 
 exports.default = DragPicker;

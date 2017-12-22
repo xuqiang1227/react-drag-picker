@@ -28,8 +28,10 @@ const styles = {position: 'relative'};
 ### props
   * onChange: function, return selected item key values
   * selectedStyle: Object, selected style. default: `{backgroundColor: '#64B5F6', color: 'white'}`
-  * className: string, parent class name
+  * className: string, parent dom(`div`) class name
   * selectionBoxStyle: selected box style
+  * clearAll: function. clear selected item.
+  * enabled: boolean. 
 
 ### example
 

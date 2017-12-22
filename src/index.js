@@ -6,9 +6,9 @@ import registerServiceWorker from './registerServiceWorker';
 
 
 
-ReactDOM.render(<div className="root"><DragPicker onChange={d => console.log(d)}>
+ReactDOM.render(<div className="root"><DragPicker ref={r => this.picker = r} onChange={d => console.log(d)}>
   {
     Array.from({length: 10}, (v, k) => k).map(i => <div className={'select-box'} key={i}>{i + 1 }</div>)
   }
-</DragPicker></div>, document.getElementById('root'));
+</DragPicker><button onClick={() => this.picker.clearAll()}>清除</button></div>, document.getElementById('root'));
 registerServiceWorker();

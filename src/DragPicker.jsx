@@ -58,7 +58,7 @@ class DragPicker extends React.PureComponent {
       selectionBox: null,
       appendMode: false
     });
-    this.props.onChange && this.props.onChange.call(null, Object.keys(this.selectedChildren));
+    this.props.onChange(Object.keys(this.selectedChildren));
   }
 
   onMouseMove(e) {
@@ -114,7 +114,13 @@ class DragPicker extends React.PureComponent {
     else {
       delete this.selectedChildren[key];
     }
-    this.props.onChange.call(null, Object.keys(this.selectedChildren));
+    this.props.onChange(Object.keys(this.selectedChildren));
+    this.forceUpdate();
+  }
+
+  clearAll() {
+    this.selectedChildren = {};
+    this.props.onChange(Object.keys(this.selectedChildren));
     this.forceUpdate();
   }
 
