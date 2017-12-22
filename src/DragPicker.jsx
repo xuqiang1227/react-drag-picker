@@ -76,47 +76,33 @@ class DragPicker extends React.PureComponent {
   }
 
   render() {
-    return(
-      <div style={{position: 'relative'}} className={this.props.className || ''} ref='selectionBox' onMouseDown={e => this.onMouseDown(e)}>
-        {this.renderItem()}
-        {this.renderPickerBox()}
-      </div>
-    );
-  }
-
-  renderItem() {
     let index = 0;
     const {selectedStyle} = this.props;
-    return React.Children.map(this.props.children, (child) => {
-      let tmpKey = !child.key ? index++ : child.key;
-      let isSelected = Object.keys(this.selectedChildren).some(i => i === tmpKey);
-      return React.cloneElement(child, {
-        ref: tmpKey,
-        style: isSelected ? selectedStyle : {},
-        onClickCapture: (e) => {
-          if((e.ctrlKey || e.altKey || e.shiftKey) && this.props.enabled) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.selectItem(tmpKey, !Object.keys(this.selectedChildren).some(i => i === tmpKey));
-          }
-        }
-      });
-    });
-  }
-
-  
-  renderPickerBox() {
-    if(!this.state.mouseDown || !this.state.endPoint || !this.state.startPoint) {
-      return null;
-    }
-    const {selectionBox} = this.state;
-    if(selectionBox) {
-      selectionBox.background = 'rgba(0, 162, 255, 0.4)';
-      selectionBox.position = 'absolute';
-      selectionBox.zIndex = 99;
-    }
+    const {mouseDown, endPoint, startPoint, selectionBox} = this.state;
+    let {selectionBoxStyle} = this.props;
     return(
-      <div style={selectionBox}></div>
+      <div style={{position: 'relative'}} className={this.props.className || ''} ref='selectionBox' onMouseDown={e => this.onMouseDown(e)}>
+        {
+          React.Children.map(this.props.children, (child) => {
+            let tmpKey = !child.key ? index++ : child.key;
+            let isSelected = Object.keys(this.selectedChildren).some(i => i === tmpKey);
+            return React.cloneElement(child, {
+              ref: tmpKey,
+              style: isSelected ? selectedStyle : {},
+              onClickCapture: (e) => {
+                if((e.ctrlKey || e.altKey || e.shiftKey) && this.props.enabled) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  this.selectItem(tmpKey, !Object.keys(this.selectedChildren).some(i => i === tmpKey));
+                }
+              }
+            });
+          })
+        }
+        {
+          mouseDown && endPoint && startPoint && <div style={{...selectionBoxStyle, ...selectionBox}}></div>
+        }
+      </div>
     );
   }
 
@@ -192,14 +178,16 @@ DragPicker.propTypes = {
   enabled: PropTypes.bool,
   onChange: PropTypes.func,
   selectedStyle: PropTypes.object,
-  className: PropTypes.string
+  className: PropTypes.string,
+  selectionBoxStyle: PropTypes.object
 };
 
 DragPicker.defaultProps = {
   enabled: true,
   onChange: () => {},
   selectedStyle: {backgroundColor: '#64B5F6', color: 'white'},
-  className: ''
+  className: '',
+  selectionBoxStyle: {background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000}
 };
 
 export default DragPicker;

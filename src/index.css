@@ -11,3 +11,8 @@
   box-sizing: border-box;
   border: 1px solid #5A5A5A;
 }
+
+.root {
+   position: relative;
+   margin-top: 200px;
+}

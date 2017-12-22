@@ -14,23 +14,52 @@ npm i react-drag-picker --save
 ```js 
 import DragPicker from 'react-drag-picker';
 
-<DragPicker><div></div></DragPicker>
+const styles = {position: 'relative'};
+
+<div style={styles}>
+  <DragPicker>
+    <div key="1">1</div>
+    <div key="2">2</div>
+    <div key="3">3</div>
+  </DragPicker>
+</div>
 ```
 
 ### props
   * onChange: function, return selected item key values
   * selectedStyle: Object, selected style. default: `{backgroundColor: '#64B5F6', color: 'white'}`
   * className: string, parent class name
+  * selectionBoxStyle: selected box style
 
 ### example
 
 ```js
-<DragPicker onChange={key => console.log(key)}>
-  {
-    Array.from({length: 65}, (v, k) => k).map(i => <div className={'select-box'} key={i}>Item {i + 1 }</div>)
-  }
-</DragPicker>
+import DragPicker from 'react-drag-picker';
+
+const styles = {position: 'relative'};
+
+<div style={styles}>
+  <DragPicker>
+    {
+      Array.from({length: 10}, (v, k) => k).map(i => <div className={'select-box'} key={i}>{i + 1 }</div>)
+    }
+  </DragPicker>
+</div>
 ```
-![](https://static.oschina.net/uploads/img/201712/21160621_lyob.png)
+```css
+.select-box {
+  background: #f0f0f0;
+  width: 30px;
+  height: 120px;
+  text-align: center;
+  line-height: 104px;
+  display: inline-block;
+  font-size: 14px;
+  color: #5A5A5A;
+  box-sizing: border-box;
+  border: 1px solid #5A5A5A;
+}
+```
+![](https://static.oschina.net/uploads/img/201712/22142737_dShD.gif )
 
 Project form [react-drag-select](https://github.com/pablofierro/react-drag-select)
