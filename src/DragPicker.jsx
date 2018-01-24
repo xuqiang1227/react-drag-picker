@@ -11,7 +11,8 @@ class DragPicker extends React.PureComponent {
       endPoint: null,
       selectionBox: null,
       selectedItems: {},
-      appendMode: false
+      appendMode: false,
+      skip: true
     };
     this.selectedChildren = {};
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -62,14 +63,13 @@ class DragPicker extends React.PureComponent {
       startPoint: null,
       endPoint: null,
       selectionBox: null,
-      appendMode: false
+      appendMode: false,
+      skip: true
     });
-    console.log(111)
     this.props.onChange(Object.keys(this.selectedChildren));
   }
 
   onMouseMove(e) {
-    console.log(2222)
     e.preventDefault();
     if(this.state.mouseDown) {
       let endPoint = {
@@ -117,8 +117,13 @@ class DragPicker extends React.PureComponent {
   
   selectItem(key, isSelected) {
     if(isSelected) {
-      if((this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length)
-      || Object.keys(this.selectedChildren).some(k => this.props.disabledkeys.some(i => i === k))) {
+      if(this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length) {
+        return false;
+      }
+      if(this.props.disabledkeys.some(k => k === key) || !this.state.skip) {
+        if(this.props.skipDisabled) {
+          this.setState({skip: false});
+        }
         return false;
       }
       this.selectedChildren[key] = isSelected;
@@ -162,8 +167,13 @@ class DragPicker extends React.PureComponent {
           height: tmpNode.clientHeight
         };
         if(this.boxIntersects(selectionBox, tmpBox)) {
-          if((this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length)
-           || Object.keys(this.selectedChildren).some(k => this.props.disabledkeys.some(i => i === k))) {
+          if(this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length) {
+            return false;
+          }
+          if(this.props.disabledkeys.some(k => k === key) || !this.state.skip) {
+            if(this.props.skipDisabled) {
+              this.setState({skip: false});
+            }
             return false;
           }
           this.selectedChildren[key] = true;
@@ -204,7 +214,8 @@ DragPicker.propTypes = {
   selectionBoxStyle: PropTypes.object,
   id: PropTypes.string,
   maxLength: PropTypes.number,
-  disabledkeys: PropTypes.array
+  disabledkeys: PropTypes.array,
+  skipDisabled: PropTypes.bool
 };
 
 DragPicker.defaultProps = {
@@ -215,6 +226,7 @@ DragPicker.defaultProps = {
   id: 'selectionBox',
   maxLength: 0,
   disabledkeys: [],
+  skipDisabled: false,
   selectionBoxStyle: {background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000}
 };
 

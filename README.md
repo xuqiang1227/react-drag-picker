@@ -35,6 +35,7 @@ const styles = {position: 'relative'};
   * id: string, parent dom id.
   * disabledkeys: array, don't allow to select items key. eg: ['11', '17']
   * maxLength: selected max number
+  * skipDisabled: boolean. Skips disabled items whether to continue selecting items
 
 ### example
 

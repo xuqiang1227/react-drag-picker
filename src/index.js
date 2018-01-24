@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 
 
-ReactDOM.render(<div className="root"><DragPicker ref={r => this.picker = r} onChange={d => console.log(d)} disabledkeys={['12', '17']}>
+ReactDOM.render(<div className="root"><DragPicker ref={r => this.picker = r} onChange={d => console.log(d)} disabledkeys={['12', '17']} skipDisabled>
   {
     Array.from({length: 10}, (v, k) => k).map(i => <div className={'select-box'} key={i+10}>{i + 1 }</div>)
   }
