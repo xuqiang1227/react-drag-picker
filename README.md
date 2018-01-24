@@ -4,6 +4,10 @@
 [![npm](https://img.shields.io/npm/v/react-drag-picker.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/react-drag-picker)
 [![NPM downloads](http://img.shields.io/npm/dm/react-drag-picker.svg?style=flat-plastic)](https://npmjs.org/package/react-drag-picker)
 
+### example
+
+![](https://static.oschina.net/uploads/img/201712/22142737_dShD.gif )
+
 ### install 
 ```bash
 npm i react-drag-picker --save
@@ -26,16 +30,21 @@ const styles = {position: 'relative'};
 ```
 
 ### props
-  * onChange: function, return selected item key values
-  * selectedStyle: Object, selected style. default: `{backgroundColor: '#64B5F6', color: 'white'}`
-  * className: string, parent dom(`div`) class name
-  * selectionBoxStyle: selected box style
-  * clearAll: function. clear selected item.
-  * enabled: boolean. 
-  * id: string, parent dom id.
-  * disabledkeys: array, don't allow to select items key. eg: ['11', '17']
-  * maxLength: selected max number
-  * skipDisabled: boolean. Skips disabled items whether to continue selecting items
+
+| props name | type | description | default | isRequired
+|------------|------|-------------------------------------------------|---------|----|
+|onChange|function|return selected item key values| `() => {}`| `true` |
+|selectedStyle|Object|selected style|`{backgroundColor: '#64B5F6', color: 'white'}`|`false`|
+|className|string|parent dom(`div`) class name|`''`|`false`|
+|selectionBoxStyle|Object|selected box style|`{background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000}`|`false`|
+|clearAll|function|clear selected item|`() => {}`|`false`|
+|enabled|boolean|can enabled|`true`|`false`|
+|id|string|parent dom id|`selectionBox`|`false`|
+|disabledkeys|array|don't allow to select items key. eg: ['11', '17']|`[]`|`false`|
+|maxLength|number|selected max number, `0` is no limited|`0`|`false`|
+|skipDisabled|boolean|Skips disabled items whether to continue selecting items|`false`|`false`|
+
+
 
 ### example
 
@@ -66,6 +75,5 @@ const styles = {position: 'relative'};
   border: 1px solid #5A5A5A;
 }
 ```
-![](https://static.oschina.net/uploads/img/201712/22142737_dShD.gif )
 
 Project form [react-drag-select](https://github.com/pablofierro/react-drag-select)

@@ -34,7 +34,7 @@ class DragPicker extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    document.getElementById(this.props.id || 'selectionBox').parentNode.removeChild(document.getElementById(this.props.id || 'selectionBox'))
+    document.getElementById(this.props.id).parentNode.removeChild(document.getElementById(this.props.id));
   }
 
   onMouseDown(e) {
@@ -96,7 +96,7 @@ class DragPicker extends React.PureComponent {
             let isSelected = Object.keys(this.selectedChildren).some(i => i === tmpKey);
             return React.cloneElement(child, {
               ref: tmpKey,
-              style: isSelected ? selectedStyle : {},
+              style: isSelected ? {...selectedStyle, ...child.props.style} : {...child.props.style},
               onClickCapture: (e) => {
                 if((e.ctrlKey || e.altKey || e.shiftKey) && this.props.enabled) {
                   e.preventDefault();
@@ -117,11 +117,12 @@ class DragPicker extends React.PureComponent {
   
   selectItem(key, isSelected) {
     if(isSelected) {
-      if(this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length) {
+      if((this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length)
+       || !this.state.skip) {
         return false;
       }
-      if(this.props.disabledkeys.some(k => k === key) || !this.state.skip) {
-        if(this.props.skipDisabled) {
+      if(this.props.disabledkeys.some(k => k === key)) {
+        if(!this.props.skipDisabled) {
           this.setState({skip: false});
         }
         return false;
@@ -167,11 +168,12 @@ class DragPicker extends React.PureComponent {
           height: tmpNode.clientHeight
         };
         if(this.boxIntersects(selectionBox, tmpBox)) {
-          if(this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length) {
+          if((this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length)
+           || !this.state.skip) {
             return false;
           }
-          if(this.props.disabledkeys.some(k => k === key) || !this.state.skip) {
-            if(this.props.skipDisabled) {
+          if(this.props.disabledkeys.some(k => k === key)) {
+            if(!this.props.skipDisabled) {
               this.setState({skip: false});
             }
             return false;
