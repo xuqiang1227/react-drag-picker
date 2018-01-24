@@ -33,7 +33,8 @@ const styles = {position: 'relative'};
   * clearAll: function. clear selected item.
   * enabled: boolean. 
   * id: string, parent dom id.
-  * disabledkeys: array, don't allow to select items key
+  * disabledkeys: array, don't allow to select items key. eg: ['11', '17']
+  * maxLength: selected max number
 
 ### example
 
