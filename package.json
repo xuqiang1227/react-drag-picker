@@ -1,6 +1,6 @@
 {
   "name": "react-drag-picker",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "private": false,
   "author": "kairi",
   "email": "kairi1227@126.com",
@@ -33,7 +33,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "webpack",
+    "build": "webpack -p",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }

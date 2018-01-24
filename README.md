@@ -32,6 +32,8 @@ const styles = {position: 'relative'};
   * selectionBoxStyle: selected box style
   * clearAll: function. clear selected item.
   * enabled: boolean. 
+  * id: string, parent dom id.
+  * disabledkeys: array, don't allow to select items key
 
 ### example
 

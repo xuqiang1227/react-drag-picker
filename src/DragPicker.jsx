@@ -14,6 +14,8 @@ class DragPicker extends React.PureComponent {
       appendMode: false
     };
     this.selectedChildren = {};
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
   }
 
   componentWillReceiveProps(np) {
@@ -30,6 +32,10 @@ class DragPicker extends React.PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    document.getElementById(this.props.id || 'selectionBox').parentNode.removeChild(document.getElementById(this.props.id || 'selectionBox'))
+  }
+
   onMouseDown(e) {
     if(!this.props.enabled || e.button === 2 || e.nativeEvent.which === 2) {
       return;
@@ -44,13 +50,13 @@ class DragPicker extends React.PureComponent {
       y: e.pageY
     };
     this.setState(nextState);
-    window.document.addEventListener('mousemove', e => this.onMouseMove(e));
-    window.document.addEventListener('mouseup', e => this.onMouseUp(e));
+    window.document.addEventListener('mousemove', this.onMouseMove);
+    window.document.addEventListener('mouseup', this.onMouseUp);
   }
 
   onMouseUp(e) {
-    window.document.removeEventListener('mousemove', e => this.onMouseMove(e));
-    window.document.removeEventListener('mouseup', e => this.onMouseUp(e));
+    window.document.removeEventListener('mousemove', this.onMouseMove);
+    window.document.removeEventListener('mouseup', this.onMouseUp);
     this.setState({
       mouseDown: false,
       startPoint: null,
@@ -58,10 +64,12 @@ class DragPicker extends React.PureComponent {
       selectionBox: null,
       appendMode: false
     });
+    console.log(111)
     this.props.onChange(Object.keys(this.selectedChildren));
   }
 
   onMouseMove(e) {
+    console.log(2222)
     e.preventDefault();
     if(this.state.mouseDown) {
       let endPoint = {
@@ -77,13 +85,13 @@ class DragPicker extends React.PureComponent {
 
   render() {
     let index = 0;
-    const {selectedStyle} = this.props;
+    const {children, selectedStyle, id, className} = this.props;
     const {mouseDown, endPoint, startPoint, selectionBox} = this.state;
     let {selectionBoxStyle} = this.props;
     return(
-      <div style={{position: 'relative'}} className={this.props.className || ''} ref='selectionBox' onMouseDown={e => this.onMouseDown(e)}>
+      <div style={{position: 'relative'}} id={id} className={className || undefined} ref='selectionBox' onMouseDown={e => this.onMouseDown(e)}>
         {
-          React.Children.map(this.props.children, (child) => {
+          React.Children.map(children, child => {
             let tmpKey = !child.key ? index++ : child.key;
             let isSelected = Object.keys(this.selectedChildren).some(i => i === tmpKey);
             return React.cloneElement(child, {
@@ -109,6 +117,10 @@ class DragPicker extends React.PureComponent {
   
   selectItem(key, isSelected) {
     if(isSelected) {
+      if((this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length)
+      || Object.keys(this.selectedChildren).some(k => this.props.disabledkeys.some(i => i === k))) {
+        return false;
+      }
       this.selectedChildren[key] = isSelected;
     }
     else {
@@ -150,6 +162,10 @@ class DragPicker extends React.PureComponent {
           height: tmpNode.clientHeight
         };
         if(this.boxIntersects(selectionBox, tmpBox)) {
+          if((this.props.maxLength && this.props.maxLength <= Object.keys(this.selectedChildren).length)
+           || Object.keys(this.selectedChildren).some(k => this.props.disabledkeys.some(i => i === k))) {
+            return false;
+          }
           this.selectedChildren[key] = true;
         }
         else {
@@ -182,10 +198,13 @@ class DragPicker extends React.PureComponent {
 
 DragPicker.propTypes = {
   enabled: PropTypes.bool,
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   selectedStyle: PropTypes.object,
   className: PropTypes.string,
-  selectionBoxStyle: PropTypes.object
+  selectionBoxStyle: PropTypes.object,
+  id: PropTypes.string,
+  maxLength: PropTypes.number,
+  disabledkeys: PropTypes.array
 };
 
 DragPicker.defaultProps = {
@@ -193,6 +212,9 @@ DragPicker.defaultProps = {
   onChange: () => {},
   selectedStyle: {backgroundColor: '#64B5F6', color: 'white'},
   className: '',
+  id: 'selectionBox',
+  maxLength: 0,
+  disabledkeys: [],
   selectionBoxStyle: {background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000}
 };
 
