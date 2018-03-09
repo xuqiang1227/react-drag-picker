@@ -85,7 +85,7 @@ class DragPicker extends React.PureComponent {
 
   render() {
     let index = 0;
-    const {children, selectedStyle, id, className} = this.props;
+    const {children, selectedStyle, id, className, disabledkeys, disabledClass} = this.props;
     const {mouseDown, endPoint, startPoint, selectionBox} = this.state;
     let {selectionBoxStyle} = this.props;
     return(
@@ -96,6 +96,7 @@ class DragPicker extends React.PureComponent {
             let isSelected = Object.keys(this.selectedChildren).some(i => i === tmpKey);
             return React.cloneElement(child, {
               ref: tmpKey,
+              className: disabledkeys.some(k => k == tmpKey) ? child.props.className + ' ' + disabledClass: child.props.className,
               style: isSelected ? {...selectedStyle, ...child.props.style} : {...child.props.style},
               onClickCapture: (e) => {
                 if((e.ctrlKey || e.altKey || e.shiftKey) && this.props.enabled) {
@@ -217,7 +218,8 @@ DragPicker.propTypes = {
   id: PropTypes.string,
   maxLength: PropTypes.number,
   disabledkeys: PropTypes.array,
-  skipDisabled: PropTypes.bool
+  skipDisabled: PropTypes.bool,
+  disabledClass: PropTypes.string,
 };
 
 DragPicker.defaultProps = {
@@ -229,7 +231,8 @@ DragPicker.defaultProps = {
   maxLength: 0,
   disabledkeys: [],
   skipDisabled: false,
-  selectionBoxStyle: {background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000}
+  selectionBoxStyle: {background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000},
+  disabledClass: ''
 };
 
 export default DragPicker;

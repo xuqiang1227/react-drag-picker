@@ -16,3 +16,7 @@
    position: relative;
    margin-top: 200px;
 }
+
+.disabled-class {
+  background-color: #000
+}

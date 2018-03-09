@@ -37,12 +37,17 @@ const styles = {position: 'relative'};
 |selectedStyle|Object|selected style|`{backgroundColor: '#64B5F6', color: 'white'}`|false|
 |className|string|parent dom(`div`) class name|`''`|false|
 |selectionBoxStyle|Object|selected box style|`{background: 'rgba(0, 162, 255, 0.4)', position: 'absolute', zIndex: 100000}`|false|
-|clearAll|function|clear selected item|`() => {}`|false|
 |enabled|boolean|can enabled|`true`|false|
 |id|string|parent dom id|`selectionBox`|false|
 |disabledkeys|array|don't allow to select items key. eg: ['11', '17']|`[]`|false|
+|disabledClass|string|disabled item's class name|`''`|false|
 |maxLength|number|selected max number, `0` is no limited|`0`|false|
 |skipDisabled|boolean|Skips disabled items whether to continue selecting items|`false`|false|
+
+### function
+| function name | description | params
+|------------|-------------------------------------------------|---|
+|clearAll|clear selected item, by refs callback||
 
 
 
