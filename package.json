@@ -36,5 +36,8 @@
     "build": "webpack -p",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
   }
 }
