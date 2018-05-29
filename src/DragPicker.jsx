@@ -33,10 +33,6 @@ class DragPicker extends React.PureComponent {
     }
   }
 
-  componentWillUnmount() {
-    document.getElementById(this.props.id).parentNode.removeChild(document.getElementById(this.props.id));
-  }
-
   onMouseDown(e) {
     if(!this.props.enabled || e.button === 2 || e.nativeEvent.which === 2) {
       return;
@@ -195,7 +191,7 @@ class DragPicker extends React.PureComponent {
     if(!this.state.mouseDown || !endPoint || !startPoint) {
       return null;
     }
-    let parentNode = this.refs.selectionBox ? this.refs.selectionBox.parentNode : document.getElementById(this.props.id).parentNode;
+    let parentNode = this.refs.selectionBox.parentNode;
     let left = Math.min(startPoint.x, endPoint.x) - parentNode.offsetLeft;
     let top = Math.min(startPoint.y, endPoint.y) - parentNode.offsetTop;
     let width = Math.abs(startPoint.x - endPoint.x);
