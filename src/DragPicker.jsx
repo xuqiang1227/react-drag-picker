@@ -96,7 +96,7 @@ class DragPicker extends React.PureComponent {
             let isSelected = Object.keys(this.selectedChildren).some(i => i === tmpKey);
             return React.cloneElement(child, {
               ref: tmpKey,
-              className: disabledkeys.some(k => k == tmpKey) ? child.props.className + ' ' + disabledClass: child.props.className,
+              className: disabledkeys.some(k => k === tmpKey) ? child.props.className + ' ' + disabledClass: child.props.className,
               style: isSelected ? {...selectedStyle, ...child.props.style} : {...child.props.style},
               onClickCapture: (e) => {
                 if((e.ctrlKey || e.altKey || e.shiftKey) && this.props.enabled) {
@@ -109,7 +109,7 @@ class DragPicker extends React.PureComponent {
           })
         }
         {
-          mouseDown && endPoint && startPoint && <div style={{...selectionBoxStyle, ...selectionBox}}></div>
+          mouseDown && endPoint && startPoint && <div style={{...selectionBoxStyle, ...selectionBox}} />
         }
       </div>
     );
@@ -195,7 +195,7 @@ class DragPicker extends React.PureComponent {
     if(!this.state.mouseDown || !endPoint || !startPoint) {
       return null;
     }
-    let parentNode = this.refs.selectionBox.parentNode;
+    let parentNode = this.refs.selectionBox ? this.refs.selectionBox.parentNode : document.getElementById(this.props.id).parentNode;
     let left = Math.min(startPoint.x, endPoint.x) - parentNode.offsetLeft;
     let top = Math.min(startPoint.y, endPoint.y) - parentNode.offsetTop;
     let width = Math.abs(startPoint.x - endPoint.x);
